@@ -11,7 +11,9 @@ import (
 	"testing"
 )
 
+// ทดสอบ flow QR → อัปโหลด → รอตรวจ → ยืนยัน และข้อห้ามสำคัญตลอด flow
 func TestSlipReviewFlow(t *testing.T) {
+	// ใช้ temporary directory ให้ไฟล์ JSON/สลิปใน test แยกจากข้อมูลแอป
 	s := &Store{path: filepath.Join(t.TempDir(), "data.json")}
 	h := s.handler()
 	req := func(method, path, body string) *httptest.ResponseRecorder {
@@ -23,6 +25,7 @@ func TestSlipReviewFlow(t *testing.T) {
 	if w.Code != 201 {
 		t.Fatal(w.Body.String())
 	}
+	// อ่านผลสร้างรายการ: ยอดใน QR ต้องตรง สถานะต้องรอสลิป และต้องได้ token อัปโหลด
 	var order struct {
 		Donation Donation `json:"donation"`
 		Token    string   `json:"uploadToken"`
@@ -34,6 +37,7 @@ func TestSlipReviewFlow(t *testing.T) {
 	if order.Donation.Status != "awaiting_slip" || !bytes.Contains([]byte(order.QR), []byte("125.00")) || order.Token == "" {
 		t.Fatalf("invalid order %+v", order)
 	}
+	// ห้าม approve ก่อนมีสลิป และยอดที่รอตรวจต้องยังไม่เข้ายอดรวม
 	id := order.Donation.ID
 	if w := req("POST", "/api/donations/"+id+"/review", `{"decision":"approve"}`); w.Code != 409 {
 		t.Fatal("approved without slip")
@@ -45,6 +49,7 @@ func TestSlipReviewFlow(t *testing.T) {
 	if profile.Total != 0 {
 		t.Fatal("unpaid order counted")
 	}
+	// จำลอง multipart/form-data พร้อมไฟล์และ header token เหมือน browser ส่งจริง
 	upload := func(data []byte, token string) *httptest.ResponseRecorder {
 		var b bytes.Buffer
 		m := multipart.NewWriter(&b)
@@ -58,23 +63,28 @@ func TestSlipReviewFlow(t *testing.T) {
 		h.ServeHTTP(w, r)
 		return w
 	}
+	// ปฏิเสธไฟล์ที่ไม่ใช่ภาพ แม้ตั้งชื่อเป็น slip.png
 	if w := upload([]byte("not an image"), order.Token); w.Code != 400 {
 		t.Fatal("accepted fake image")
 	}
+	// สร้างภาพ PNG ขนาดเล็กจริงสำหรับทดสอบ โดยไม่ต้องใช้สลิปหรือข้อมูลส่วนตัว
 	var img bytes.Buffer
 	png.Encode(&img, image.NewRGBA(image.Rect(0, 0, 2, 2)))
+	// ไฟล์ถูกต้องแต่ token ไม่ตรงต้องไม่มีสิทธิ์อัปโหลด
 	if w := upload(img.Bytes(), "wrong"); w.Code != 403 {
 		t.Fatal("accepted wrong upload token")
 	}
 	if w := upload(img.Bytes(), order.Token); w.Code != 200 {
 		t.Fatal(w.Body.String())
 	}
+	// อัปโหลดสำเร็จต้องรอตรวจ และห้ามปรากฏในรายการสำหรับ overlay
 	if s.donations[0].Status != "pending_review" {
 		t.Fatal("upload verified payment")
 	}
 	if w := req("GET", "/api/donations?confirmed=1", ""); w.Body.String() != "[]\n" {
 		t.Fatal("pending alert leaked", w.Body.String())
 	}
+	// ตรวจว่า token ถูกเก็บสำหรับกู้ระบบ และภาพหลักฐานเปิดอ่านได้
 	restored := &Store{path: s.path}
 	if e := restored.load(); e != nil {
 		t.Fatal(e)
@@ -85,6 +95,7 @@ func TestSlipReviewFlow(t *testing.T) {
 	if w := req("GET", "/api/donations/"+id+"/slip", ""); w.Code != 200 || !bytes.Equal(w.Body.Bytes(), img.Bytes()) {
 		t.Fatal("slip retrieval failed")
 	}
+	// approve แล้วต้องนับยอดครั้งเดียว; การ approve ซ้ำต้องตอบ 409
 	if w := req("POST", "/api/donations/"+id+"/review", `{"decision":"approve"}`); w.Code != 200 {
 		t.Fatal(w.Body.String())
 	}
@@ -95,6 +106,7 @@ func TestSlipReviewFlow(t *testing.T) {
 	if w := req("POST", "/api/donations/"+id+"/review", `{"decision":"approve"}`); w.Code != 409 {
 		t.Fatal("duplicate approval accepted")
 	}
+	// ประวัติสาธารณะต้องไม่เปิดเผย token อัปโหลด
 	if bytes.Contains(req("GET", "/api/donations", "").Body.Bytes(), []byte(order.Token)) {
 		t.Fatal("token leaked")
 	}

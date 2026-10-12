@@ -1,3 +1,694 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap');
-:root{font-family:'Noto Sans Thai',sans-serif;color:#efedf8;background:#101017}*{box-sizing:border-box}body{margin:0}button,input,textarea{font:inherit}button,a{cursor:pointer}button{border:0}a{text-decoration:none;color:inherit}button:disabled{opacity:.6}button:focus-visible,a:focus-visible{outline:2px solid #c7b2ff;outline-offset:4px}.demo-bar{text-align:center;font-size:11px;color:#d6c8fc;background:#28203d;padding:9px 15px}header{max-width:1100px;margin:auto;padding:25px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff0b}.logo{font-size:28px;font-weight:700;letter-spacing:-1.5px}.logo span{color:#a98aff;margin-left:6px}nav{display:flex;gap:8px}nav button{background:none;color:#92909f;font-size:12px;padding:9px 14px;border-radius:8px}nav button.active{color:#d8c8ff;background:#a986ff15}header>small{color:#8e829f;border:1px solid #373044;border-radius:5px;padding:5px 8px;font-size:9px;letter-spacing:1.5px}main{max-width:1020px;margin:auto;padding:0 24px 60px}.intro{text-align:center;padding:44px 0 36px}.avatar{width:78px;height:78px;margin:0 auto 24px;display:grid;place-items:center;font-size:27px;font-weight:700;background:linear-gradient(135deg,#aa84ed,#634fa9);border-radius:26px;box-shadow:0 0 60px #a886ff1c}.eyebrow{font-size:9px;letter-spacing:2px;font-weight:600;color:#a78cda}h1{font-size:32px;letter-spacing:-.6px;margin:12px 0}h1 span{color:#bc9cff}.intro>p,.muted{color:#93909f;font-size:12px}.tags{display:flex;justify-content:center;gap:9px;margin-top:19px}.tags span{background:#1d1c27;font-size:10px;color:#a7a3b4;border-radius:30px;padding:5px 12px}.grid{display:grid;grid-template-columns:1.35fr 1fr;gap:24px}.panel{background:#1a1923;border:1px solid #ffffff09;border-radius:16px;padding:26px}h2{font-size:17px;margin:0;font-weight:600}label{display:block;margin-top:23px;font-size:12px;font-weight:500}.presets{display:flex;gap:10px;margin-top:10px}.presets button{flex:1;background:#23212e;border:1px solid #353140;border-radius:8px;padding:10px;color:#b5adca;font-size:14px}.presets .selected{background:#a986ff16;border-color:#a98aff;color:#c5abff}input,textarea{width:100%;display:block;margin-top:10px;padding:13px 14px;color:#f1eefa;background:#111017;border:1px solid #35303f;border-radius:9px;outline-color:#a98aff;font-size:13px}input::placeholder,textarea::placeholder{color:#655f72}textarea{resize:vertical;min-height:100px}label>small{display:block;text-align:right;font-size:9px;color:#716a7f;margin-top:5px}.notice{color:#9f90b8;font-size:10px;padding:8px 0}.submit{width:100%;background:linear-gradient(100deg,#ac88ed,#8769d9);border-radius:9px;padding:14px;color:#fff;font-size:14px;font-weight:600;margin-top:8px;box-shadow:0 6px 22px #8961de20}.submit:hover{filter:brightness(1.1)}.form-note{font-size:10px;color:#857994;text-align:center;margin:15px 0 0}.goal h2{margin-top:15px;font-size:16px}.goal-numbers{display:flex;align-items:baseline;gap:8px;margin-top:24px}.goal-numbers strong{font-size:29px;color:#c7a7ff}.goal-numbers span{color:#8a819c;font-size:12px}.progress{height:7px;background:#30283f;border-radius:7px;margin:12px 0}.progress>div{height:100%;background:linear-gradient(90deg,#8662d6,#c4a4ff);border-radius:7px}.goal>small{color:#81758e;font-size:10px}.supporters{margin-top:20px}.supporters h2{font-size:14px}.history article{display:flex;gap:12px;align-items:flex-start;padding:18px 0;border-bottom:1px solid #ffffff08}.history article:last-child{border-bottom:0}.donor-icon{width:32px;height:32px;flex-shrink:0;background:#a884ff14;color:#b99aed;display:grid;place-items:center;border-radius:10px}.history article>div{flex:1;min-width:0}.history strong{font-size:12px;overflow-wrap:anywhere}.history small{font-size:9px;color:#91839f;display:block;margin-top:3px}.history p{font-size:11px;color:#b2a6c3;overflow-wrap:anywhere;margin:8px 0 0}.history b{font-size:13px;color:#bc9cff;white-space:nowrap}.empty{text-align:center;padding:30px 5px;color:#9a8ba9}.empty>span{font-size:35px;color:#9c7dcc}.empty p{font-size:12px;margin:8px 0}.empty small{font-size:10px}footer{max-width:1100px;margin:auto;padding:24px;display:flex;justify-content:space-between;gap:16px;align-items:center;border-top:1px solid #ffffff08}footer>.logo{font-size:22px}footer>span:not(.logo),footer small{color:#8b7e9d;font-size:10px}.dashboard{padding-top:40px}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:28px 0}.metrics span{font-size:11px;color:#9a8dad}.metrics strong{display:block;font-size:30px;color:#c4a4ff;margin-top:10px}.obs-panel{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:22px}.obs-panel h2{margin-top:12px}.obs-panel p{font-size:12px;color:#a096b1;line-height:1.8}.obs-panel code{display:block;background:#111017;padding:12px;border-radius:8px;font-size:11px;overflow-wrap:anywhere}.secondary{background:#30253f;color:#cab2eb;border:1px solid #584372;border-radius:8px;padding:12px 18px;white-space:nowrap;font-size:12px}h2>small{font-size:10px;color:#867792;margin-left:10px}.error{background:#47252d;color:#ffd3d3;padding:12px;border-radius:8px;font-size:12px}.error button{margin-left:10px;border-radius:5px;padding:5px}.backdrop{position:fixed;inset:0;background:#080610dc;display:flex;align-items:center;justify-content:center;z-index:10;padding:20px}.receipt{max-width:440px;width:100%;text-align:center;max-height:90dvh;overflow:auto}.heart{color:#b28bfa;font-size:48px;margin-bottom:16px}.receipt>strong{display:block;font-size:42px;color:#bc9cff;margin:20px 0}.receipt>p{font-size:13px;color:#a69ab8}.receipt>small{font-size:9px;color:#a08eb4;overflow-wrap:anywhere}.receipt blockquote{color:#cbb9e2;font-size:13px;overflow-wrap:anywhere;background:#251f30;padding:15px;margin:15px 0;border-radius:10px}html.overlay-page,body.overlay-page{background:transparent}.overlay-page #root{background:transparent}.obs-root{width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}.stream-alert{text-align:center;background:#191223ef;border:2px solid #ba8dff;box-shadow:0 0 35px #b98bff50;border-radius:22px;max-width:700px;min-width:320px;padding:25px 40px;animation:pop .4s ease-out}.stream-alert>div{font-size:35px;color:#c3a0ff}.stream-alert h1{font-size:28px;overflow-wrap:anywhere}.stream-alert strong{font-size:32px;color:#c7a4ff}.stream-alert p{font-size:20px;overflow-wrap:anywhere}.stream-alert small{color:#a08ab6;font-size:10px}@keyframes pop{from{opacity:0;transform:translateY(20px) scale(.9)}to{opacity:1;transform:none}}@media(max-width:650px){header{padding:20px 16px}header>small{display:none}nav{gap:0}nav button{font-size:10px;padding:8px 10px}main{padding:0 16px 35px}.intro{padding-top:35px}h1{font-size:25px}.grid{grid-template-columns:1fr}.panel{padding:22px}.metrics{gap:8px}.metrics .panel{padding:13px}.metrics span{font-size:9px}.metrics strong{font-size:21px}.obs-panel{flex-direction:column;align-items:stretch}.dashboard h1{font-size:27px}footer{flex-wrap:wrap}footer small{display:none}.tags{gap:5px}.tags span{font-size:9px;padding:5px 9px}.stream-alert{min-width:0;width:100%;padding:20px}}
-.payment{max-width:470px;width:100%;max-height:92dvh;overflow:auto;text-align:center}.payment h2{margin:14px 0 0}.payment form{text-align:left}.qr{display:block;width:230px;max-width:100%;margin:16px auto;border-radius:12px;border:8px solid white;background:white}.order-id{display:block;font-size:10px;color:#a895bb;overflow-wrap:anywhere}.payment .muted{font-size:11px}.payment input[type=file]{font-size:11px}.slip-preview{display:block;max-width:100%;max-height:220px;margin:16px auto;border-radius:8px;object-fit:contain}.back-button{width:100%;margin-top:10px}.status{display:inline-block!important;width:fit-content;padding:4px 8px;border-radius:5px;background:#342e43;color:#c1afd7!important;margin-top:8px!important}.status.pending_review{background:#463821;color:#f6d28d!important}.status.demo_confirmed{background:#203e33;color:#9cdbb8!important}.status.rejected{background:#47252d;color:#ffbfc8!important}.review-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.review-buttons button{background:#3d2c57;color:#dec6ff;border:1px solid #61437f;font-size:10px;padding:8px;border-radius:6px}.review-buttons button:last-child{background:#402630;color:#ffbfcb}.slip-link{display:block;font-size:11px;color:#c4a0ff;margin-top:9px}
+/* โหลดฟอนต์ภาษาไทย; หากโหลดไม่ได้ใช้ sans-serif สำรอง */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap");
+/* ค่าธีมพื้นฐานและกติกาที่ใช้ร่วมกันทั้งเว็บ */
+:root {
+  font-family: "Noto Sans Thai", sans-serif;
+  color: #efedf8;
+  background: #101017;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button,
+input,
+textarea {
+  font: inherit;
+}
+button,
+a {
+  cursor: pointer;
+}
+button {
+  border: 0;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+button:disabled {
+  opacity: 0.6;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #c7b2ff;
+  outline-offset: 4px;
+}
+/* แถบโหมดทดลองและแถบนำทางด้านบน */
+.demo-bar {
+  text-align: center;
+  font-size: 11px;
+  color: #d6c8fc;
+  background: #28203d;
+  padding: 9px 15px;
+}
+header {
+  max-width: 1100px;
+  margin: auto;
+  padding: 25px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #ffffff0b;
+}
+.logo {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -1.5px;
+}
+.logo span {
+  color: #a98aff;
+  margin-left: 6px;
+}
+nav {
+  display: flex;
+  gap: 8px;
+}
+nav button {
+  background: none;
+  color: #92909f;
+  font-size: 12px;
+  padding: 9px 14px;
+  border-radius: 8px;
+}
+nav button.active {
+  color: #d8c8ff;
+  background: #a986ff15;
+}
+header > small {
+  color: #8e829f;
+  border: 1px solid #373044;
+  border-radius: 5px;
+  padding: 5px 8px;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+main {
+  max-width: 1020px;
+  margin: auto;
+  padding: 0 24px 60px;
+}
+/* ส่วนโปรไฟล์สตรีมเมอร์และหมวดหมู่ใต้ชื่อ */
+.intro {
+  text-align: center;
+  padding: 44px 0 36px;
+}
+.avatar {
+  width: 78px;
+  height: 78px;
+  margin: 0 auto 24px;
+  display: grid;
+  place-items: center;
+  font-size: 27px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #aa84ed, #634fa9);
+  border-radius: 26px;
+  box-shadow: 0 0 60px #a886ff1c;
+}
+.eyebrow {
+  font-size: 9px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  color: #a78cda;
+}
+h1 {
+  font-size: 32px;
+  letter-spacing: -0.6px;
+  margin: 12px 0;
+}
+h1 span {
+  color: #bc9cff;
+}
+.intro > p,
+.muted {
+  color: #93909f;
+  font-size: 12px;
+}
+.tags {
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 19px;
+}
+.tags span {
+  background: #1d1c27;
+  font-size: 10px;
+  color: #a7a3b4;
+  border-radius: 30px;
+  padding: 5px 12px;
+}
+/* จัดหน้าโดเนทเป็นสองคอลัมน์: ฟอร์มและเป้าหมาย/ประวัติ */
+.grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+}
+.panel {
+  background: #1a1923;
+  border: 1px solid #ffffff09;
+  border-radius: 16px;
+  padding: 26px;
+}
+h2 {
+  font-size: 17px;
+  margin: 0;
+  font-weight: 600;
+}
+/* ฟอร์มโดเนท: ป้ายกำกับ ปุ่มยอดสำเร็จรูป ช่องกรอก และปุ่มส่ง */
+label {
+  display: block;
+  margin-top: 23px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.presets {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+.presets button {
+  flex: 1;
+  background: #23212e;
+  border: 1px solid #353140;
+  border-radius: 8px;
+  padding: 10px;
+  color: #b5adca;
+  font-size: 14px;
+}
+.presets .selected {
+  background: #a986ff16;
+  border-color: #a98aff;
+  color: #c5abff;
+}
+input,
+textarea {
+  width: 100%;
+  display: block;
+  margin-top: 10px;
+  padding: 13px 14px;
+  color: #f1eefa;
+  background: #111017;
+  border: 1px solid #35303f;
+  border-radius: 9px;
+  outline-color: #a98aff;
+  font-size: 13px;
+}
+input::placeholder,
+textarea::placeholder {
+  color: #655f72;
+}
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+label > small {
+  display: block;
+  text-align: right;
+  font-size: 9px;
+  color: #716a7f;
+  margin-top: 5px;
+}
+.notice {
+  color: #9f90b8;
+  font-size: 10px;
+  padding: 8px 0;
+}
+.submit {
+  width: 100%;
+  background: linear-gradient(100deg, #ac88ed, #8769d9);
+  border-radius: 9px;
+  padding: 14px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 8px;
+  box-shadow: 0 6px 22px #8961de20;
+}
+.submit:hover {
+  filter: brightness(1.1);
+}
+.form-note {
+  font-size: 10px;
+  color: #857994;
+  text-align: center;
+  margin: 15px 0 0;
+}
+/* เป้าหมายโดเนท: ยอด เปอร์เซ็นต์ และแถบ progress */
+.goal h2 {
+  margin-top: 15px;
+  font-size: 16px;
+}
+.goal-numbers {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 24px;
+}
+.goal-numbers strong {
+  font-size: 29px;
+  color: #c7a7ff;
+}
+.goal-numbers span {
+  color: #8a819c;
+  font-size: 12px;
+}
+.progress {
+  height: 7px;
+  background: #30283f;
+  border-radius: 7px;
+  margin: 12px 0;
+}
+.progress > div {
+  height: 100%;
+  background: linear-gradient(90deg, #8662d6, #c4a4ff);
+  border-radius: 7px;
+}
+.goal > small {
+  color: #81758e;
+  font-size: 10px;
+}
+.supporters {
+  margin-top: 20px;
+}
+.supporters h2 {
+  font-size: 14px;
+}
+/* ประวัติโดเนท: ชื่อ เวลา ข้อความ และจำนวนเงิน */
+.history article {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 18px 0;
+  border-bottom: 1px solid #ffffff08;
+}
+.history article:last-child {
+  border-bottom: 0;
+}
+.donor-icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  background: #a884ff14;
+  color: #b99aed;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+}
+.history article > div {
+  flex: 1;
+  min-width: 0;
+}
+.history strong {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.history small {
+  font-size: 9px;
+  color: #91839f;
+  display: block;
+  margin-top: 3px;
+}
+.history p {
+  font-size: 11px;
+  color: #b2a6c3;
+  overflow-wrap: anywhere;
+  margin: 8px 0 0;
+}
+.history b {
+  font-size: 13px;
+  color: #bc9cff;
+  white-space: nowrap;
+}
+.empty {
+  text-align: center;
+  padding: 30px 5px;
+  color: #9a8ba9;
+}
+.empty > span {
+  font-size: 35px;
+  color: #9c7dcc;
+}
+.empty p {
+  font-size: 12px;
+  margin: 8px 0;
+}
+.empty small {
+  font-size: 10px;
+}
+/* ส่วนท้ายหน้าเว็บ */
+footer {
+  max-width: 1100px;
+  margin: auto;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  border-top: 1px solid #ffffff08;
+}
+footer > .logo {
+  font-size: 22px;
+}
+footer > span:not(.logo),
+footer small {
+  color: #8b7e9d;
+  font-size: 10px;
+}
+/* แดชบอร์ด: การ์ดสถิติและการตั้งค่า OBS */
+.dashboard {
+  padding-top: 40px;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin: 28px 0;
+}
+.metrics span {
+  font-size: 11px;
+  color: #9a8dad;
+}
+.metrics strong {
+  display: block;
+  font-size: 30px;
+  color: #c4a4ff;
+  margin-top: 10px;
+}
+.obs-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+.obs-panel h2 {
+  margin-top: 12px;
+}
+.obs-panel p {
+  font-size: 12px;
+  color: #a096b1;
+  line-height: 1.8;
+}
+.obs-panel code {
+  display: block;
+  background: #111017;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+.secondary {
+  background: #30253f;
+  color: #cab2eb;
+  border: 1px solid #584372;
+  border-radius: 8px;
+  padding: 12px 18px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+h2 > small {
+  font-size: 10px;
+  color: #867792;
+  margin-left: 10px;
+}
+.error {
+  background: #47252d;
+  color: #ffd3d3;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+.error button {
+  margin-left: 10px;
+  border-radius: 5px;
+  padding: 5px;
+}
+/* พื้นหลังและหน้าต่างผลส่งหลักฐาน */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: #080610dc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  padding: 20px;
+}
+.receipt {
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  max-height: 90dvh;
+  overflow: auto;
+}
+.heart {
+  color: #b28bfa;
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+.receipt > strong {
+  display: block;
+  font-size: 42px;
+  color: #bc9cff;
+  margin: 20px 0;
+}
+.receipt > p {
+  font-size: 13px;
+  color: #a69ab8;
+}
+.receipt > small {
+  font-size: 9px;
+  color: #a08eb4;
+  overflow-wrap: anywhere;
+}
+.receipt blockquote {
+  color: #cbb9e2;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  background: #251f30;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 10px;
+}
+/* พื้นหลังโปร่งใสสำหรับ OBS; ต้องล้างทั้ง html, body และ root */
+html.overlay-page,
+body.overlay-page {
+  background: transparent;
+}
+.overlay-page #root {
+  background: transparent;
+}
+.obs-root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+/* กล่องแจ้งเตือนบนสตรีมและรูปแบบชื่อ/ยอด/ข้อความ */
+.stream-alert {
+  text-align: center;
+  background: #191223ef;
+  border: 2px solid #ba8dff;
+  box-shadow: 0 0 35px #b98bff50;
+  border-radius: 22px;
+  max-width: 700px;
+  min-width: 320px;
+  padding: 25px 40px;
+  animation: pop 0.4s ease-out;
+}
+.stream-alert > div {
+  font-size: 35px;
+  color: #c3a0ff;
+}
+.stream-alert h1 {
+  font-size: 28px;
+  overflow-wrap: anywhere;
+}
+.stream-alert strong {
+  font-size: 32px;
+  color: #c7a4ff;
+}
+.stream-alert p {
+  font-size: 20px;
+  overflow-wrap: anywhere;
+}
+.stream-alert small {
+  color: #a08ab6;
+  font-size: 10px;
+}
+/* แอนิเมชันให้แจ้งเตือนค่อย ๆ ปรากฏและเลื่อนขึ้น */
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* ปรับ layout สำหรับมือถือ: รวมคอลัมน์ ลดระยะ และซ่อนข้อมูลรอง */
+@media (max-width: 650px) {
+  header {
+    padding: 20px 16px;
+  }
+  header > small {
+    display: none;
+  }
+  nav {
+    gap: 0;
+  }
+  nav button {
+    font-size: 10px;
+    padding: 8px 10px;
+  }
+  main {
+    padding: 0 16px 35px;
+  }
+  .intro {
+    padding-top: 35px;
+  }
+  h1 {
+    font-size: 25px;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .panel {
+    padding: 22px;
+  }
+  .metrics {
+    gap: 8px;
+  }
+  .metrics .panel {
+    padding: 13px;
+  }
+  .metrics span {
+    font-size: 9px;
+  }
+  .metrics strong {
+    font-size: 21px;
+  }
+  .obs-panel {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .dashboard h1 {
+    font-size: 27px;
+  }
+  footer {
+    flex-wrap: wrap;
+  }
+  footer small {
+    display: none;
+  }
+  .tags {
+    gap: 5px;
+  }
+  .tags span {
+    font-size: 9px;
+    padding: 5px 9px;
+  }
+  .stream-alert {
+    min-width: 0;
+    width: 100%;
+    padding: 20px;
+  }
+}
+/* หน้าต่าง QR: จำกัดความสูงและเลื่อนภายในได้บนจอเล็ก */
+.payment {
+  max-width: 470px;
+  width: 100%;
+  max-height: 92dvh;
+  overflow: auto;
+  text-align: center;
+}
+.payment h2 {
+  margin: 14px 0 0;
+}
+.payment form {
+  text-align: left;
+}
+.qr {
+  display: block;
+  width: 230px;
+  max-width: 100%;
+  margin: 16px auto;
+  border-radius: 12px;
+  border: 8px solid white;
+  background: white;
+}
+.order-id {
+  display: block;
+  font-size: 10px;
+  color: #a895bb;
+  overflow-wrap: anywhere;
+}
+.payment .muted {
+  font-size: 11px;
+}
+.payment input[type="file"] {
+  font-size: 11px;
+}
+.slip-preview {
+  display: block;
+  max-width: 100%;
+  max-height: 220px;
+  margin: 16px auto;
+  border-radius: 8px;
+  object-fit: contain;
+}
+.back-button {
+  width: 100%;
+  margin-top: 10px;
+}
+/* สีสถานะรายการและปุ่มตรวจหลักฐานในแดชบอร์ด */
+.status {
+  display: inline-block !important;
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background: #342e43;
+  color: #c1afd7 !important;
+  margin-top: 8px !important;
+}
+.status.pending_review {
+  background: #463821;
+  color: #f6d28d !important;
+}
+.status.demo_confirmed {
+  background: #203e33;
+  color: #9cdbb8 !important;
+}
+.status.rejected {
+  background: #47252d;
+  color: #ffbfc8 !important;
+}
+.review-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.review-buttons button {
+  background: #3d2c57;
+  color: #dec6ff;
+  border: 1px solid #61437f;
+  font-size: 10px;
+  padding: 8px;
+  border-radius: 6px;
+}
+.review-buttons button:last-child {
+  background: #402630;
+  color: #ffbfcb;
+}
+.slip-link {
+  display: block;
+  font-size: 11px;
+  color: #c4a0ff;
+  margin-top: 9px;
+}

@@ -10,14 +10,18 @@ import (
 	"testing"
 )
 
+// ทดสอบสร้างรายการ ตรวจข้อมูลที่ไม่อนุญาต ยอดที่ยังไม่ยืนยัน และการกู้ข้อมูลจากไฟล์
 func TestDonationFlowAndPersistence(t *testing.T) {
+	// ใช้โฟลเดอร์ชั่วคราวของ test เพื่อไม่แตะข้อมูลโดเนทจริงในเครื่อง
 	s := &Store{path: filepath.Join(t.TempDir(), "donations.json")}
 	h := s.handler()
+	// สร้าง HTTP request/response ในหน่วยความจำ ไม่ต้องเปิดพอร์ตหรือรัน server จริง
 	request := func(method, path, body string) *httptest.ResponseRecorder {
 		w := httptest.NewRecorder()
 		h.ServeHTTP(w, httptest.NewRequest(method, path, bytes.NewBufferString(body)))
 		return w
 	}
+	// ข้อมูลผิดต้องตอบ 400: ฟิลด์เก่า ยอดศูนย์ ยอดเกินเพดาน ทศนิยม และ ID ที่ผู้ใช้ปลอม
 	for _, body := range []string{`{"projectId":"old","amount":100}`, `{"amount":0}`, `{"amount":1000001}`, `{"amount":1.5}`, `{"amount":100,"id":"forged"}`} {
 		if w := request("POST", "/api/donations", body); w.Code != 400 {
 			t.Fatalf("invalid input returned %d: %s", w.Code, body)
@@ -35,6 +39,7 @@ func TestDonationFlowAndPersistence(t *testing.T) {
 	if d.ID == "" || d.Name != "ผู้บริจาคไม่ประสงค์ออกนาม" {
 		t.Fatalf("bad receipt: %+v", d)
 	}
+	// สร้างรายการแล้วต้องมี count เพิ่ม แต่ total ยังเป็นศูนย์เพราะยังไม่ผ่านการตรวจ
 	w = request("GET", "/api/profile", "")
 	var p struct {
 		Total int64 `json:"total"`
@@ -44,6 +49,7 @@ func TestDonationFlowAndPersistence(t *testing.T) {
 	if p.Total != 0 || p.Count != 1 {
 		t.Fatalf("totals: %+v", p)
 	}
+	// สร้าง Store ใหม่และโหลดไฟล์ เพื่อยืนยันว่าข้อมูลอยู่หลัง restart ไม่ใช่แค่ใน memory
 	restored := &Store{path: s.path}
 	if err := restored.load(); err != nil {
 		t.Fatal(err)
@@ -55,9 +61,12 @@ func TestDonationFlowAndPersistence(t *testing.T) {
 		t.Fatal("history unavailable")
 	}
 }
+
+// ส่งพร้อมกัน 10 คำขอเพื่อตรวจ mutex และยืนยันว่าไม่มีรายการสูญหายทั้ง memory และไฟล์
 func TestConcurrentDonations(t *testing.T) {
 	s := &Store{path: filepath.Join(t.TempDir(), "data.json")}
 	h := s.handler()
+	// WaitGroup รอ goroutine ทุกตัวให้จบก่อนตรวจจำนวนรายการ
 	var wg sync.WaitGroup
 	for i := 0; i < 10; i++ {
 		wg.Add(1)
