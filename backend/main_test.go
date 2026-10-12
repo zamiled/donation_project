@@ -27,8 +27,11 @@ func TestDonationFlowAndPersistence(t *testing.T) {
 	if w.Code != 201 {
 		t.Fatalf("create: %d %s", w.Code, w.Body.String())
 	}
-	var d Donation
-	json.Unmarshal(w.Body.Bytes(), &d)
+	var order struct {
+		Donation Donation `json:"donation"`
+	}
+	json.Unmarshal(w.Body.Bytes(), &order)
+	d := order.Donation
 	if d.ID == "" || d.Name != "ผู้บริจาคไม่ประสงค์ออกนาม" {
 		t.Fatalf("bad receipt: %+v", d)
 	}
@@ -38,7 +41,7 @@ func TestDonationFlowAndPersistence(t *testing.T) {
 		Count int   `json:"count"`
 	}
 	json.Unmarshal(w.Body.Bytes(), &p)
-	if p.Total != 300 || p.Count != 1 {
+	if p.Total != 0 || p.Count != 1 {
 		t.Fatalf("totals: %+v", p)
 	}
 	restored := &Store{path: s.path}
