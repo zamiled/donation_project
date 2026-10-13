@@ -1,11 +1,14 @@
+import { useLanguage } from "../i18n/LanguageProvider";
+import LanguageSwitcher from "./LanguageSwitcher";
 import React, { useEffect, useState } from "react";
 import QRCode from "qrcode";
 import { api } from "../lib/api";
-import { money } from "../lib/format";
 
 // หน้าต่างขั้น QR และสลิป: order มาจาก backend จึงยึดยอดและ ID ของรายการนั้น
 // onClose กลับไปแก้ยอด; onComplete แจ้ง App ว่าอัปโหลดสำเร็จและรอตรวจ
 export default function PaymentModal({ order, onClose, onComplete }) {
+  const { t, money } = useLanguage();
+
   // qr คือรูป QR แบบ data URL; file คือไฟล์ที่เลือก; preview คือ URL สำหรับดูภาพก่อนส่ง
   const [qr, setQr] = useState(""),
     [file, setFile] = useState(null),
@@ -87,26 +90,34 @@ export default function PaymentModal({ order, onClose, onComplete }) {
         aria-modal="true"
         aria-labelledby="payment-title"
       >
-        <div className="eyebrow">STEP 2 · QR & SLIP</div>
-        <h2 id="payment-title">QR สำหรับยอด ฿{money(order.donation.amount)}</h2>
-        <p className="notice">QR ทดลองเท่านั้น ใช้จ่ายเงินจริงไม่ได้</p>
+        <div className="modal-language">
+          <LanguageSwitcher />
+        </div>
+        <div className="eyebrow">{t("STEP 2 · QR & SLIP")} </div>
+        <h2 id="payment-title">
+          {t("QR สำหรับยอด ฿")}
+          {money(order.donation.amount)}
+        </h2>
+        <p className="notice">{t("QR ทดลองเท่านั้น ใช้จ่ายเงินจริงไม่ได้")} </p>
         {qr ? (
           <img
             className="qr"
             src={qr}
-            alt={"QR ทดลองยอด " + order.donation.amount + " บาท"}
+            alt={t("QR ทดลองยอด ") + order.donation.amount + t(" บาท")}
           />
         ) : (
-          <p>กำลังสร้าง QR…</p>
+          <p>{t("กำลังสร้าง QR…")} </p>
         )}
         <small className="order-id">{order.donation.id}</small>
         <p className="muted">
-          ยอดนี้ล็อกตามรายการ หากต้องการเปลี่ยนยอดให้กลับไปสร้างรายการใหม่
+          {t(
+            "ยอดนี้ล็อกตามรายการ หากต้องการเปลี่ยนยอดให้กลับไปสร้างรายการใหม่",
+          )}{" "}
         </p>
         {/* ส่งได้เมื่อเลือกไฟล์แล้ว; อัปโหลดสำเร็จหมายถึงรอตรวจ ไม่ได้ยืนยันว่าโอนเงินจริง */}
         <form onSubmit={upload}>
           <label>
-            อัปโหลดหลักฐานทดลอง
+            {t("อัปโหลดหลักฐานทดลอง")}{" "}
             <input
               type="file"
               accept="image/png,image/jpeg"
@@ -116,22 +127,24 @@ export default function PaymentModal({ order, onClose, onComplete }) {
             />
           </label>
           <small className="muted">
-            PNG / JPEG ไม่เกิน 5 MB · ใช้ภาพตัวอย่าง หลีกเลี่ยงข้อมูลบัญชีจริง
+            {t(
+              "PNG / JPEG ไม่เกิน 5 MB · ใช้ภาพตัวอย่าง หลีกเลี่ยงข้อมูลบัญชีจริง",
+            )}{" "}
           </small>
           {preview && (
             <img
               className="slip-preview"
               src={preview}
-              alt="ตัวอย่างสลิปที่เลือก"
+              alt={t("ตัวอย่างสลิปที่เลือก")}
             />
           )}
           {error && (
             <p className="error" role="alert">
-              {error}
+              {t(error)}
             </p>
           )}
           <button className="submit" disabled={!file || busy}>
-            {busy ? "กำลังอัปโหลด…" : "ส่งสลิปเพื่อรอตรวจสอบ"}
+            {busy ? t("กำลังอัปโหลด…") : t("ส่งสลิปเพื่อรอตรวจสอบ")}
           </button>
           <button
             type="button"
@@ -139,7 +152,7 @@ export default function PaymentModal({ order, onClose, onComplete }) {
             disabled={busy}
             onClick={onClose}
           >
-            กลับไปแก้ไขยอด
+            {t("กลับไปแก้ไขยอด")}{" "}
           </button>
         </form>
       </section>

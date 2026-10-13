@@ -1,8 +1,8 @@
+import { useLanguage } from "../i18n/LanguageProvider";
 import React, { useState } from "react";
 import { api } from "../lib/api";
-import { money } from "../lib/format";
 
-// แปลงสถานะจาก backend ให้เป็นข้อความภาษาไทย โดยไม่เปลี่ยนค่าที่เก็บจริง
+// แปลงสถานะจาก backend ให้เป็นข้อความตามภาษาที่เลือก โดยไม่เปลี่ยนค่าที่เก็บจริง
 const statuses = {
   awaiting_slip: "รอแนบสลิป",
   pending_review: "รอตรวจสอบ",
@@ -12,6 +12,8 @@ const statuses = {
 // ใช้ component เดียวกันทั้งประวัติผู้ชมและแดชบอร์ด
 // onReview ส่งมาเฉพาะแดชบอร์ด เพื่อเปิดลิงก์สลิปและปุ่มตรวจหลักฐาน
 export default function DonationHistory({ items, onReview }) {
+  const { t, locale, money, displayName } = useLanguage();
+
   const [busy, setBusy] = useState(""),
     [error, setError] = useState("");
   // ส่งผล approve/reject แล้วเรียก callback โหลดข้อมูลใหม่
@@ -36,7 +38,7 @@ export default function DonationHistory({ items, onReview }) {
     <>
       {error && (
         <p className="error" role="alert">
-          {error}
+          {t(error)}
         </p>
       )}
       {/* มีรายการให้แสดงรายการตามลำดับที่ API ส่งมา; ถ้าไม่มีให้แสดงสถานะว่าง */}
@@ -46,10 +48,10 @@ export default function DonationHistory({ items, onReview }) {
             <article key={d.id}>
               <span className="donor-icon">♥</span>
               <div>
-                <strong>{d.name}</strong>
+                <strong>{displayName(d.name)}</strong>
                 {/* แปลงเวลา UTC จาก backend เป็นเวลาไทย Asia/Bangkok */}
                 <small>
-                  {new Date(d.createdAt).toLocaleString("th-TH", {
+                  {new Date(d.createdAt).toLocaleString(locale, {
                     timeZone: "Asia/Bangkok",
                     dateStyle: "short",
                     timeStyle: "short",
@@ -57,7 +59,7 @@ export default function DonationHistory({ items, onReview }) {
                 </small>
                 {d.message && <p>{d.message}</p>}
                 <small className={"status " + d.status}>
-                  {statuses[d.status] || "โดเนททดลองเดิม"}
+                  {t(statuses[d.status] || "โดเนททดลองเดิม")}
                 </small>
                 {onReview && d.slip && (
                   <a
@@ -66,7 +68,7 @@ export default function DonationHistory({ items, onReview }) {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    ดูสลิป ↗
+                    {t("ดูสลิป ↗")}{" "}
                   </a>
                 )}
                 {/* เปิดปุ่มตรวจเฉพาะรายการรอตรวจ; backend ตรวจสถานะซ้ำอีกชั้น */}
@@ -76,13 +78,13 @@ export default function DonationHistory({ items, onReview }) {
                       disabled={busy === d.id}
                       onClick={() => review(d.id, "approve")}
                     >
-                      ยืนยันหลักฐาน (ทดลอง)
+                      {t("ยืนยันหลักฐาน (ทดลอง)")}{" "}
                     </button>
                     <button
                       disabled={busy === d.id}
                       onClick={() => review(d.id, "reject")}
                     >
-                      ไม่ผ่าน
+                      {t("ไม่ผ่าน")}{" "}
                     </button>
                   </div>
                 )}
@@ -94,8 +96,8 @@ export default function DonationHistory({ items, onReview }) {
       ) : (
         <div className="empty">
           <span>♡</span>
-          <p>ยังไม่มีโดเนท</p>
-          <small>ส่งกำลังใจแรกให้สตรีมนี้กัน</small>
+          <p>{t("ยังไม่มีโดเนท")} </p>
+          <small>{t("ส่งกำลังใจแรกให้สตรีมนี้กัน")} </small>
         </div>
       )}
     </>

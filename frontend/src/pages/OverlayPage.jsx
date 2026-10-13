@@ -1,9 +1,11 @@
+import { useLanguage } from "../i18n/LanguageProvider";
 import React, { useEffect, useRef, useState } from "react";
 import { api } from "../lib/api";
-import { money } from "../lib/format";
 
 // หน้าสำหรับ OBS: โหลดเฉพาะรายการยืนยันแล้ว แล้วแสดงแจ้งเตือนจากคิวทีละรายการ
 export default function OverlayPage() {
+  const { t, money, displayName } = useLanguage();
+
   const [alert, setAlert] = useState(null),
     [error, setError] = useState("");
   // queue เก็บรายการรอแสดง, seen จำ ID ที่รู้จักแล้ว, ready บอกว่าโหลดครั้งแรกสำเร็จ
@@ -56,14 +58,17 @@ export default function OverlayPage() {
   }, [alert]);
   return (
     <div className="obs-root">
-      {error && <div className="error">{error}</div>}
+      {error && <div className="error">{t(error)}</div>}
       {alert && (
         <div className="stream-alert">
           <div>♥</div>
-          <h1>{alert.name}</h1>
-          <strong>โดเนท ฿{money(alert.amount)}</strong>
-          <p>{alert.message || "ส่งกำลังใจให้สตรีมนี้ 💜"}</p>
-          <small>DEMO · โดเนทจำลอง</small>
+          <h1>{displayName(alert.name)}</h1>
+          <strong>
+            {t("โดเนท ฿")}
+            {money(alert.amount)}
+          </strong>
+          <p>{alert.message || t("ส่งกำลังใจให้สตรีมนี้ 💜")}</p>
+          <small>{t("DEMO · โดเนทจำลอง")} </small>
         </div>
       )}
     </div>

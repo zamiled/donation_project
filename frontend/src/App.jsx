@@ -1,5 +1,7 @@
+import { useLanguage } from "./i18n/LanguageProvider";
 import React, { useEffect, useState } from "react";
 import { api } from "./lib/api";
+import LanguageSwitcher from "./components/LanguageSwitcher";
 import DonationPage from "./pages/DonationPage";
 import DashboardPage from "./pages/DashboardPage";
 import PaymentModal from "./components/PaymentModal";
@@ -7,6 +9,8 @@ import SubmissionReceipt from "./components/SubmissionReceipt";
 
 // App ดูแล layout, state ร่วม และคำขอ API; หน้าจอแต่ละหน้าอยู่ใน pages/
 export default function App() {
+  const { t } = useLanguage();
+
   // profile/items คือข้อมูล backend; tab คือหน้าที่เลือก; amount/name/anonymous/message คือค่าฟอร์ม
   // busy/error/loadError คือสถานะคำขอ; order เปิด QR; receipt เปิดผลส่งหลักฐาน; copied คือผลคัดลอก URL
   const [profile, setProfile] = useState(null),
@@ -85,7 +89,7 @@ export default function App() {
   return (
     <>
       <div className="demo-bar">
-        DEMO MODE — ทดลองส่งโดเนท ไม่มีการหักเงินจริง
+        {t("DEMO MODE — ทดลองส่งโดเนท ไม่มีการหักเงินจริง")}{" "}
       </div>
       {/* ปุ่มเมนูเปลี่ยน tab ใน state โดยไม่ได้เปลี่ยน URL; ตอนเปิด /dashboard ใช้ค่านั้นเลือก tab เริ่มต้น */}
       <header>
@@ -97,25 +101,28 @@ export default function App() {
             className={tab === "donate" ? "active" : ""}
             onClick={() => setTab("donate")}
           >
-            หน้าโดเนท
+            {t("หน้าโดเนท")}{" "}
           </button>
           <button
             className={tab === "dashboard" ? "active" : ""}
             onClick={() => setTab("dashboard")}
           >
-            แดชบอร์ดสตรีมเมอร์
+            {t("แดชบอร์ดสตรีมเมอร์")}{" "}
           </button>
         </nav>
-        <small>SANDBOX</small>
+        <div className="header-actions">
+          <small>{t("SANDBOX")}</small>
+          <LanguageSwitcher />
+        </div>
       </header>
       {/* แสดงข้อผิดพลาด/สถานะโหลดก่อน แล้วเลือกหน้าโดเนทหรือแดชบอร์ดจาก tab */}
       <main>
         {loadError && (
           <div className="error" role="alert">
-            {loadError} <button onClick={refresh}>ลองใหม่</button>
+            {t(loadError)} <button onClick={refresh}>{t("ลองใหม่")} </button>
           </div>
         )}
-        {!profile && !loadError && <p>กำลังโหลด…</p>}
+        {!profile && !loadError && <p>{t("กำลังโหลด…")} </p>}
         {profile &&
           (tab === "donate" ? (
             <DonationPage
@@ -148,8 +155,8 @@ export default function App() {
         <span className="logo">
           pulse<span>♥</span>
         </span>
-        <span>A little support. A lot of inspiration.</span>
-        <small>React + Go · Streamer demo</small>
+        <span>{t("A little support. A lot of inspiration.")} </span>
+        <small>{t("React + Go · Streamer demo")} </small>
       </footer>
       {/* แสดงขั้น QR เมื่อมี order; ปิดหน้าต่างไม่ได้ลบรายการที่ backend สร้างไว้ */}
       {order && (
