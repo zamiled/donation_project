@@ -37,13 +37,25 @@ func (s *Store) createDonation(w http.ResponseWriter, r *http.Request) {
 	dec.DisallowUnknownFields()
 	// รับเฉพาะข้อมูลจากผู้ชม; ID, เวลา, token และสถานะต้องสร้างโดย backend
 	var input struct {
-		Name    string `json:"name"`
-		Amount  int64  `json:"amount"`
-		Message string `json:"message"`
+		Name      string `json:"name"`
+		Anonymous bool   `json:"anonymous"`
+		Amount    int64  `json:"amount"`
+		Message   string `json:"message"`
 	}
 	if e := dec.Decode(&input); e != nil {
 		write(w, 400, map[string]string{"error": "ข้อมูลไม่ถูกต้อง"})
 		return
+	}
+	// ตรวจชื่อที่ backend ด้วย ป้องกันการข้าม required ในหน้าเว็บหรือเรียก API ตรง
+	// เมื่อเลือก anonymous ไม่เก็บชื่อที่ผู้ชมส่งมา เพื่อไม่ให้หลุดไปประวัติหรือ overlay
+	if input.Anonymous {
+		input.Name = ""
+	} else {
+		input.Name = strings.TrimSpace(input.Name)
+		if input.Name == "" {
+			write(w, 400, map[string]string{"error": "กรุณากรอกชื่อที่แสดงบนสตรีม หรือเลือกไม่ประสงค์ออกนาม"})
+			return
+		}
 	}
 	// ตรวจยอดจำนวนเต็มและนับความยาวชื่อ/ข้อความด้วย rune เพื่อรองรับภาษาไทย
 	if input.Amount < 1 || input.Amount > 1000000 || len([]rune(input.Name)) > 80 || len([]rune(input.Message)) > 300 {

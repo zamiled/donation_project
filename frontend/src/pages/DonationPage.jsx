@@ -11,6 +11,8 @@ export default function DonationPage({
   setAmount,
   name,
   setName,
+  anonymous,
+  setAnonymous,
   message,
   setMessage,
   busy,
@@ -42,10 +44,25 @@ export default function DonationPage({
               ชื่อที่แสดงบนสตรีม
               <input
                 maxLength={80}
-                value={name}
+                required={!anonymous}
+                disabled={anonymous}
+                value={anonymous ? "" : name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="ชื่อหรือชื่อเล่น (ไม่บังคับ)"
+                placeholder={
+                  anonymous
+                    ? "ผู้บริจาคไม่ประสงค์ออกนาม"
+                    : "กรอกชื่อหรือชื่อเล่นของคุณ"
+                }
               />
+            </label>
+            {/* เลือก anonymous แทนการกรอกชื่อ; เก็บชื่อเดิมใน state แต่ไม่ส่งให้ backend */}
+            <label className="anonymous-option">
+              <input
+                type="checkbox"
+                checked={anonymous}
+                onChange={(e) => setAnonymous(e.target.checked)}
+              />
+              <span>ไม่ประสงค์ออกนาม (Anonymous)</span>
             </label>
             <label>
               จำนวนเงิน (บาท)

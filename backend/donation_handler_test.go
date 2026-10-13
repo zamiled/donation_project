@@ -22,12 +22,12 @@ func TestDonationFlowAndPersistence(t *testing.T) {
 		return w
 	}
 	// ข้อมูลผิดต้องตอบ 400: ฟิลด์เก่า ยอดศูนย์ ยอดเกินเพดาน ทศนิยม และ ID ที่ผู้ใช้ปลอม
-	for _, body := range []string{`{"projectId":"old","amount":100}`, `{"amount":0}`, `{"amount":1000001}`, `{"amount":1.5}`, `{"amount":100,"id":"forged"}`} {
+	for _, body := range []string{`{"projectId":"old","amount":100}`, `{"amount":0,"anonymous":true}`, `{"amount":1000001,"anonymous":true}`, `{"amount":1.5,"anonymous":true}`, `{"amount":100,"id":"forged"}`} {
 		if w := request("POST", "/api/donations", body); w.Code != 400 {
 			t.Fatalf("invalid input returned %d: %s", w.Code, body)
 		}
 	}
-	w := request("POST", "/api/donations", `{"amount":300,"message":"ส่งกำลังใจ"}`)
+	w := request("POST", "/api/donations", `{"amount":300,"anonymous":true,"message":"ส่งกำลังใจ"}`)
 	if w.Code != 201 {
 		t.Fatalf("create: %d %s", w.Code, w.Body.String())
 	}
@@ -73,7 +73,7 @@ func TestConcurrentDonations(t *testing.T) {
 		go func() {
 			defer wg.Done()
 			w := httptest.NewRecorder()
-			h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/donations", bytes.NewBufferString(`{"amount":100}`)))
+			h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/donations", bytes.NewBufferString(`{"amount":100,"anonymous":true}`)))
 			if w.Code != 201 {
 				t.Errorf("status %d", w.Code)
 			}
@@ -89,5 +89,54 @@ func TestConcurrentDonations(t *testing.T) {
 	}
 	if len(restored.donations) != 10 {
 		t.Fatal("persisted donations missing")
+	}
+}
+
+// ต้องมีชื่อจริงที่ไม่ใช่ช่องว่าง หรือเลือก anonymous อย่างชัดเจน และไม่เก็บชื่อที่ซ่อนไว้
+func TestDonationNameOrAnonymous(t *testing.T) {
+	cases := []struct {
+		name, body, wantName string
+		status               int
+	}{
+		{"missing name", `{"amount":50}`, "", 400},
+		{"empty name", `{"amount":50,"name":""}`, "", 400},
+		{"whitespace name", `{"amount":50,"name":"  \t "}`, "", 400},
+		{"anonymous false needs name", `{"amount":50,"anonymous":false}`, "", 400},
+		{"named", `{"amount":50,"name":"  ผู้ชมหนึ่ง  "}`, "ผู้ชมหนึ่ง", 201},
+		{"explicit anonymous", `{"amount":50,"anonymous":true}`, "ผู้บริจาคไม่ประสงค์ออกนาม", 201},
+		{"anonymous hides supplied name", `{"amount":50,"anonymous":true,"name":"ชื่อที่ไม่ต้องเผยแพร่"}`, "ผู้บริจาคไม่ประสงค์ออกนาม", 201},
+		{"invalid anonymous type", `{"amount":50,"anonymous":"true"}`, "", 400},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			s := &Store{path: filepath.Join(t.TempDir(), "donations.json")}
+			w := httptest.NewRecorder()
+			s.handler().ServeHTTP(w, httptest.NewRequest("POST", "/api/donations", bytes.NewBufferString(tc.body)))
+			if w.Code != tc.status {
+				t.Fatalf("status %d, want %d: %s", w.Code, tc.status, w.Body.String())
+			}
+			if tc.status == 400 {
+				if len(s.donations) != 0 {
+					t.Fatal("invalid name persisted")
+				}
+				return
+			}
+			var order struct {
+				Donation Donation `json:"donation"`
+			}
+			if err := json.Unmarshal(w.Body.Bytes(), &order); err != nil {
+				t.Fatal(err)
+			}
+			if order.Donation.Name != tc.wantName {
+				t.Fatalf("name %q, want %q", order.Donation.Name, tc.wantName)
+			}
+			restored := &Store{path: s.path}
+			if err := restored.load(); err != nil {
+				t.Fatal(err)
+			}
+			if restored.donations[0].Name != tc.wantName {
+				t.Fatal("incorrect persisted name")
+			}
+		})
 	}
 }

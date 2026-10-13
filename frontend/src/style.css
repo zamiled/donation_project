@@ -692,3 +692,25 @@ body.overlay-page {
   color: #c4a0ff;
   margin-top: 9px;
 }
+
+/* ตัวเลือกไม่ประสงค์ออกนาม: จัด checkbox ข้างข้อความ และลดความเด่นของช่องชื่อที่ปิดไว้ */
+.anonymous-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  cursor: pointer;
+  color: #c7b2df;
+}
+.anonymous-option input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  accent-color: #a98aff;
+  flex-shrink: 0;
+}
+input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

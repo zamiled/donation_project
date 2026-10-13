@@ -7,7 +7,7 @@ import SubmissionReceipt from "./components/SubmissionReceipt";
 
 // App ดูแล layout, state ร่วม และคำขอ API; หน้าจอแต่ละหน้าอยู่ใน pages/
 export default function App() {
-  // profile/items คือข้อมูล backend; tab คือหน้าที่เลือก; amount/name/message คือค่าฟอร์ม
+  // profile/items คือข้อมูล backend; tab คือหน้าที่เลือก; amount/name/anonymous/message คือค่าฟอร์ม
   // busy/error/loadError คือสถานะคำขอ; order เปิด QR; receipt เปิดผลส่งหลักฐาน; copied คือผลคัดลอก URL
   const [profile, setProfile] = useState(null),
     [items, setItems] = useState([]),
@@ -16,6 +16,7 @@ export default function App() {
     ),
     [amount, setAmount] = useState(50),
     [name, setName] = useState(""),
+    [anonymous, setAnonymous] = useState(false),
     [message, setMessage] = useState(""),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
@@ -44,13 +45,23 @@ export default function App() {
   // แปลง amount เป็น Number เพราะค่าจาก input อาจเป็น string
   async function donate(e) {
     e.preventDefault();
-    setBusy(true);
     setError("");
+    // ไม่ยอมรับชื่อที่มีแต่ช่องว่าง เว้นแต่ผู้ชมเลือกไม่ประสงค์ออกนาม
+    if (!anonymous && !name.trim()) {
+      setError("กรุณากรอกชื่อที่แสดงบนสตรีม หรือเลือกไม่ประสงค์ออกนาม");
+      return;
+    }
+    setBusy(true);
     try {
       const d = await api("donations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: Number(amount), name, message }),
+        body: JSON.stringify({
+          amount: Number(amount),
+          name: anonymous ? "" : name.trim(),
+          anonymous,
+          message,
+        }),
       });
       // เปิด PaymentModal ด้วยข้อมูลตอบกลับ ซึ่งมี donation, uploadToken และ qrPayload
       // ข้อมูลรายการค้างเก็บใน state เท่านั้น จึงหายเมื่อรีเฟรชหน้า
@@ -114,6 +125,8 @@ export default function App() {
               setAmount={setAmount}
               name={name}
               setName={setName}
+              anonymous={anonymous}
+              setAnonymous={setAnonymous}
               message={message}
               setMessage={setMessage}
               busy={busy}
