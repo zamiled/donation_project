@@ -1,9 +1,9 @@
 import { useLanguage } from "../i18n/LanguageProvider";
-import LanguageSwitcher from "./LanguageSwitcher";
 import React, { useEffect, useState } from "react";
 import QRCode from "qrcode";
 import { api } from "../lib/api";
 
+// ใช้ภาษาร่วมจากหน้าโดเนท ไม่มีตัวเลือกภาษาแยกในหน้าต่าง QR
 // หน้าต่างขั้น QR และสลิป: order มาจาก backend จึงยึดยอดและ ID ของรายการนั้น
 // onClose กลับไปแก้ยอด; onComplete แจ้ง App ว่าอัปโหลดสำเร็จและรอตรวจ
 export default function PaymentModal({ order, onClose, onComplete }) {
@@ -90,9 +90,6 @@ export default function PaymentModal({ order, onClose, onComplete }) {
         aria-modal="true"
         aria-labelledby="payment-title"
       >
-        <div className="modal-language">
-          <LanguageSwitcher />
-        </div>
         <div className="eyebrow">{t("STEP 2 · QR & SLIP")} </div>
         <h2 id="payment-title">
           {t("QR สำหรับยอด ฿")}

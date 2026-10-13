@@ -715,7 +715,7 @@ input:disabled {
   cursor: not-allowed;
 }
 
-/* ตัวเลือกภาษาอยู่ด้านขวาของ header เสมอ และยังเลือกได้ขณะเปิด QR/ผลส่งหลักฐาน */
+/* ตัวเลือกภาษาอยู่ด้านขวาของ header เสมอ และยังเลือกได้ในหน้าต่างผลส่งหลักฐาน; QR ใช้ภาษาจากหน้าโดเนท */
 .header-actions {
   display: flex;
   align-items: center;

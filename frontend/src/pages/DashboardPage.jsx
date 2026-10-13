@@ -18,7 +18,7 @@ export default function DashboardPage({
       <div className="eyebrow">{t("CREATOR SPACE · DEMO")} </div>
       <h1>{t("แดชบอร์ดสตรีมเมอร์")} </h1>
       <p className="muted">{t("ยอดและข้อความจากผู้ชม อัปเดตทุก 3 วินาที")} </p>
-      {/* ยอดนับเฉพาะยืนยันแล้ว แต่จำนวนรายการรวมทุกสถานะตาม profile.count */}
+      {/* ยอดนับเฉพาะยืนยันแล้ว แต่จำนวนรายการรวมสถานะที่ส่งหลักฐานแล้วตาม profile.count */}
       <div className="metrics">
         <section className="panel">
           <span>{t("ยอดยืนยันแล้ว (ทดลอง)")} </span>

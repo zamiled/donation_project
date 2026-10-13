@@ -39,14 +39,14 @@ func TestDonationFlowAndPersistence(t *testing.T) {
 	if d.ID == "" || d.Name != "ผู้บริจาคไม่ประสงค์ออกนาม" {
 		t.Fatalf("bad receipt: %+v", d)
 	}
-	// สร้างรายการแล้วต้องมี count เพิ่ม แต่ total ยังเป็นศูนย์เพราะยังไม่ผ่านการตรวจ
+	// สร้าง QR อย่างเดียวยังไม่ปรากฏในแดชบอร์ด ทั้ง total และ count ต้องเป็นศูนย์
 	w = request("GET", "/api/profile", "")
 	var p struct {
 		Total int64 `json:"total"`
 		Count int   `json:"count"`
 	}
 	json.Unmarshal(w.Body.Bytes(), &p)
-	if p.Total != 0 || p.Count != 1 {
+	if p.Total != 0 || p.Count != 0 {
 		t.Fatalf("totals: %+v", p)
 	}
 	// สร้าง Store ใหม่และโหลดไฟล์ เพื่อยืนยันว่าข้อมูลอยู่หลัง restart ไม่ใช่แค่ใน memory
@@ -138,5 +138,52 @@ func TestDonationNameOrAnonymous(t *testing.T) {
 				t.Fatal("incorrect persisted name")
 			}
 		})
+	}
+}
+
+// QR ที่ยังไม่ส่งสลิปต้องไม่แสดง ไม่เพิ่มจำนวน และไม่เบียดรายการจริงออกจาก 20 รายการล่าสุด
+func TestDashboardHidesUnsubmittedDonations(t *testing.T) {
+	s := &Store{donations: []Donation{
+		{ID: "legacy", Status: "", Amount: 10},
+		{ID: "approved", Status: "demo_confirmed", Amount: 20},
+		{ID: "pending", Status: "pending_review", Amount: 30},
+		{ID: "rejected", Status: "rejected", Amount: 40},
+	}}
+	for i := 0; i < 25; i++ {
+		s.donations = append(s.donations, Donation{Status: "awaiting_slip", Amount: 100})
+	}
+	for _, tc := range []struct {
+		path string
+		ids  []string
+	}{
+		{"/api/donations", []string{"rejected", "pending", "approved", "legacy"}},
+		{"/api/donations?confirmed=1", []string{"approved", "legacy"}},
+	} {
+		w := httptest.NewRecorder()
+		s.handler().ServeHTTP(w, httptest.NewRequest("GET", tc.path, nil))
+		var items []Donation
+		if e := json.Unmarshal(w.Body.Bytes(), &items); e != nil {
+			t.Fatal(e)
+		}
+		if len(items) != len(tc.ids) {
+			t.Fatalf("%s: got %d items, want %d", tc.path, len(items), len(tc.ids))
+		}
+		for i, d := range items {
+			if d.ID != tc.ids[i] {
+				t.Fatalf("unexpected dashboard item: %+v", d)
+			}
+		}
+	}
+	w := httptest.NewRecorder()
+	s.handler().ServeHTTP(w, httptest.NewRequest("GET", "/api/profile", nil))
+	var profile struct {
+		Total int64 `json:"total"`
+		Count int   `json:"count"`
+	}
+	if e := json.Unmarshal(w.Body.Bytes(), &profile); e != nil {
+		t.Fatal(e)
+	}
+	if profile.Total != 30 || profile.Count != 4 {
+		t.Fatalf("incorrect dashboard stats: %+v", profile)
 	}
 }

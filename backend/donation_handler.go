@@ -11,7 +11,8 @@ import (
 	"time"
 )
 
-// คืนรายการใหม่ก่อน สูงสุด 20 รายการ
+// คืนรายการที่ส่งหลักฐานแล้ว ใหม่ก่อน สูงสุด 20 รายการ
+// รายการ awaiting_slip เป็นขั้นเตรียม QR ของผู้ชม ยังไม่ส่งเข้าแดชบอร์ด
 // confirmed=1 กรองรายการสำหรับ overlay ไม่ให้รายการรอตรวจถูกแจ้งเตือน
 func (s *Store) listDonations(w http.ResponseWriter, r *http.Request) {
 	// ล็อกข้อมูลร่วมและใช้ defer ปลดล็อกเสมอเมื่อ handler จบ
@@ -19,6 +20,9 @@ func (s *Store) listDonations(w http.ResponseWriter, r *http.Request) {
 	defer s.mu.Unlock()
 	out := make([]Donation, 0)
 	for i := len(s.donations) - 1; i >= 0 && len(out) < 20; i-- {
+		if s.donations[i].Status == "awaiting_slip" {
+			continue
+		}
 		if r.URL.Query().Get("confirmed") == "1" && s.donations[i].Status != "demo_confirmed" && s.donations[i].Status != "" {
 			continue
 		}

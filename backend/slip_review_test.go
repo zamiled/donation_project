@@ -44,10 +44,14 @@ func TestSlipReviewFlow(t *testing.T) {
 	}
 	var profile struct {
 		Total int64 `json:"total"`
+		Count int   `json:"count"`
 	}
 	json.Unmarshal(req("GET", "/api/profile", "").Body.Bytes(), &profile)
-	if profile.Total != 0 {
+	if profile.Total != 0 || profile.Count != 0 {
 		t.Fatal("unpaid order counted")
+	}
+	if w := req("GET", "/api/donations", ""); w.Body.String() != "[]\n" {
+		t.Fatal("QR-only donation appeared on dashboard", w.Body.String())
 	}
 	// จำลอง multipart/form-data พร้อมไฟล์และ header token เหมือน browser ส่งจริง
 	upload := func(data []byte, token string) *httptest.ResponseRecorder {
@@ -76,6 +80,17 @@ func TestSlipReviewFlow(t *testing.T) {
 	}
 	if w := upload(img.Bytes(), order.Token); w.Code != 200 {
 		t.Fatal(w.Body.String())
+	}
+	var dashboard []Donation
+	if e := json.Unmarshal(req("GET", "/api/donations", "").Body.Bytes(), &dashboard); e != nil {
+		t.Fatal(e)
+	}
+	if len(dashboard) != 1 || dashboard[0].Status != "pending_review" {
+		t.Fatal("submitted slip missing from dashboard")
+	}
+	json.Unmarshal(req("GET", "/api/profile", "").Body.Bytes(), &profile)
+	if profile.Count != 1 || profile.Total != 0 {
+		t.Fatal("pending slip has incorrect stats")
 	}
 	// อัปโหลดสำเร็จต้องรอตรวจ และห้ามปรากฏในรายการสำหรับ overlay
 	if s.donations[0].Status != "pending_review" {
