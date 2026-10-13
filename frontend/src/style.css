@@ -714,3 +714,66 @@ input:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* ตัวเลือกภาษาอยู่ด้านขวาของ header เสมอ และยังเลือกได้ขณะเปิด QR/ผลส่งหลักฐาน */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.header-actions > small {
+  color: #a393b6;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+.language-switcher {
+  display: inline-flex;
+  padding: 3px;
+  gap: 3px;
+  border: 1px solid #433450;
+  border-radius: 9px;
+  background: #1b1723;
+}
+.language-switcher button {
+  background: transparent;
+  color: #a99ab9;
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.language-switcher button[aria-pressed="true"] {
+  background: #a98aff;
+  color: #171020;
+}
+.modal-language {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 14px;
+}
+@media (max-width: 650px) {
+  header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 14px;
+  }
+  header > .logo {
+    grid-row: 1;
+    grid-column: 1;
+  }
+  .header-actions {
+    grid-row: 1;
+    grid-column: 2;
+  }
+  .header-actions > small {
+    display: none;
+  }
+  header > nav {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+  header > nav button {
+    font-size: 12px;
+  }
+}
