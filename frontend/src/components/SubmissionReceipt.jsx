@@ -1,5 +1,4 @@
 import { useLanguage } from "../i18n/LanguageProvider";
-import LanguageSwitcher from "./LanguageSwitcher";
 import React from "react";
 
 // ผลสำเร็จของการส่งไฟล์: รายการยังรอตรวจ ไม่ใช่การยืนยันการโอนเงิน
@@ -14,9 +13,6 @@ export default function SubmissionReceipt({ receipt, onClose }) {
         aria-modal="true"
         aria-labelledby="thanks"
       >
-        <div className="modal-language">
-          <LanguageSwitcher />
-        </div>
         <div className="heart">♥</div>
         <h2 id="thanks">{t("ส่งหลักฐานเรียบร้อย!")} </h2>
         <strong>฿{money(receipt.amount)}</strong>

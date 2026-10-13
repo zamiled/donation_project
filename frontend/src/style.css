@@ -715,7 +715,7 @@ input:disabled {
   cursor: not-allowed;
 }
 
-/* ตัวเลือกภาษาอยู่ด้านขวาของ header เสมอ และยังเลือกได้ในหน้าต่างผลส่งหลักฐาน; QR ใช้ภาษาจากหน้าโดเนท */
+/* ตัวเลือกภาษาอยู่เฉพาะ header; popup ทุกตัวใช้ภาษาร่วมจากหน้าหลัก */
 .header-actions {
   display: flex;
   align-items: center;
@@ -745,11 +745,6 @@ input:disabled {
 .language-switcher button[aria-pressed="true"] {
   background: #a98aff;
   color: #171020;
-}
-.modal-language {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 14px;
 }
 @media (max-width: 650px) {
   header {
